@@ -32,7 +32,7 @@ const NeoList = () => {
       const neoList = parseData(data, startDate, endDate);
 
       neoList.forEach((neo) => {
-        addNeoToList(neo);
+        // addNeoToList(neo);
       });
 
       // Restart the data request after 5 seconds
@@ -41,6 +41,36 @@ const NeoList = () => {
       console.error('Error fetching NEO data:', error);
     }
   };
+
+    // Function to get the current date in the format expected by API
+    const getCurrentStartDate = () => {
+      const today = new Date();
+      const day = 1;
+      const month = today.getMonth() + 1;
+      const year = today.getFullYear();
+      return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    };
+
+    // Function for getting the end date based on the start date
+    const getEndDate = (startDate) => {
+    // Split the start date into year, month and day
+    const [year, month, day] = startDate.split('-').map(Number);
+
+    // Create a new date based on the start date
+    const endDate = new Date(year, month - 1, day);
+    endDate.setDate(endDate.getDate() + 6);
+
+    //Get the year, month and day values for the end date
+    const endDay = endDate.getDate();
+    const endMonth = endDate.getMonth() + 1;
+    const endYear = endDate.getFullYear();
+
+    return `${endYear}-${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`;
+  };
+
+
+
+
 
   return (
     <div>
