@@ -68,6 +68,28 @@ const NeoList = () => {
     return `${endYear}-${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`;
   };
 
+  // Function to get the next date
+  const getNextDate = (currentDate) => {
+    // Split the current date into year, month and day
+    const [year, month, day] = currentDate.split('-').map(Number);
+
+    // Create a new date based on the current date
+    const date = new Date(year, month - 1, day);
+    date.setDate(date.getDate() + 1);
+
+    // We get the year, month and day values for the following date
+    const nextDay = date.getDate();
+    const nextMonth = date.getMonth() + 1;
+    const nextYear = date.getFullYear();
+
+    // Format the next date as a string and return it
+    if (nextMonth > month) {
+      return `${nextYear}-${nextMonth.toString().padStart(2, '0')}-01`;
+    } else {
+      return `${nextYear}-${nextMonth.toString().padStart(2, '0')}-${nextDay.toString().padStart(2, '0')}`;
+    }
+  };
+
 
 
 
