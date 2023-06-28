@@ -90,7 +90,41 @@ const NeoList = () => {
     }
   };
 
+  // Function for NEO data aggregation
+  const aggregateData = (neos) => {
+    const aggregatedData = {
+      maxDiameter: { kilometers: 0 },
+      hazardousCount: 0,
+      closest: { kilometers: Infinity },
+      fastest: { kilometers_per_hour: 0 },
+    };
 
+    neos.forEach((neo) => {
+      const { estimated_diameter_max, is_potentially_hazardous_asteroid, close_approach_data } = neo;
+
+      if (estimated_diameter_max > aggregatedData.maxDiameter.kilometers) {
+        aggregatedData.maxDiameter.kilometers = estimated_diameter_max;
+      }
+
+      if (is_potentially_hazardous_asteroid) {
+        aggregatedData.hazardousCount++;
+      }
+
+      close_approach_data.forEach((approach) => {
+        const { miss_distance, relative_velocity } = approach;
+
+        if (miss_distance.kilometers < aggregatedData.closest.kilometers) {
+          aggregatedData.closest = miss_distance;
+        }
+
+        if (relative_velocity.kilometers_per_hour > aggregatedData.fastest.kilometers_per_hour) {
+          aggregatedData.fastest = relative_velocity;
+        }
+      });
+    });
+
+    return aggregatedData;
+  };
 
 
 
