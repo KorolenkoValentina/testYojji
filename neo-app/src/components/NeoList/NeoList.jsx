@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import NeoListItem from './NeoListItem ';
+// import axios from 'axios';
+import NeoListItem from '../NeoListItem/NeoListItem ';
 
 const API_KEY = '6sNjGOfATiWxAKPySg07YfFbxWfLaVlAZrKXbiox';
 const API_URL = `https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&api_key=${API_KEY}`;
@@ -32,7 +32,7 @@ const NeoList = () => {
       const neoList = parseData(data, startDate, endDate);
 
       neoList.forEach((neo) => {
-        // addNeoToList(neo);
+        addNeoToList(neo);
       });
 
       // Restart the data request after 5 seconds
@@ -141,9 +141,27 @@ const NeoList = () => {
         }
       });
     });
-
+    
     return aggregatedData;
   };
+
+      //Function for adding NEOs to the list
+
+      const addNeoToList = (newNeo) => {
+        setNeos((prevNeos) => {
+          const updatedNeos = [...prevNeos];
+      
+          //If the NEO list has reached the maximum length (6 items), delete the first item
+          if (updatedNeos.length === 6) {
+            updatedNeos.shift();
+          }
+      
+          // Adding a new NEO to the list
+          updatedNeos.push(newNeo);
+      
+          return updatedNeos;
+        });
+      };
 
 
 
