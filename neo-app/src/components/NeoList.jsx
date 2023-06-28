@@ -68,6 +68,25 @@ const NeoList = () => {
     return `${endYear}-${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`;
   };
 
+  // Function for parsing data and forming the NEO list
+  const parseData = (data, startDate, endDate) => {
+    const neosData = data.near_earth_objects;
+    const neoList = [];
+
+    let currentDate = startDate;
+    while (currentDate <= endDate) {
+      const neos = neosData[currentDate];
+      if (neos) {
+        const aggregatedData = aggregateData(neos);
+        aggregatedData.index = currentDate;
+        neoList.push(aggregatedData);
+      }
+      currentDate = getNextDate(currentDate);
+    }
+
+    return neoList;
+  };
+
   // Function to get the next date
   const getNextDate = (currentDate) => {
     // Split the current date into year, month and day
