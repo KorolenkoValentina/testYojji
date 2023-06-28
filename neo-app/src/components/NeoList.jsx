@@ -18,7 +18,29 @@ const NeoList = () => {
     };
   }, []);
 
-  
+  // Function to retrieve data from API
+  const fetchData = async () => {
+    try {
+      const startDate = getCurrentStartDate();
+      const endDate = getEndDate(startDate);
+      const url = API_URL.replace('START_DATE', startDate);
+
+      // Making a GET request to the API using the axios library
+      const response = await axios.get(url);
+      const data = response.data;
+
+      const neoList = parseData(data, startDate, endDate);
+
+      neoList.forEach((neo) => {
+        addNeoToList(neo);
+      });
+
+      // Restart the data request after 5 seconds
+      setTimeout(fetchData, 5000);
+    } catch (error) {
+      console.error('Error fetching NEO data:', error);
+    }
+  };
 
   return (
     <div>
